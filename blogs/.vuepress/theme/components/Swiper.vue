@@ -40,7 +40,7 @@
             this.titles = this.$page.frontmatter.features.map(item => item.title)
             this.len = this.titles.length
             this.showChild()
-            // this.run()
+            this.run()
         },
         methods: {
             showChild(){

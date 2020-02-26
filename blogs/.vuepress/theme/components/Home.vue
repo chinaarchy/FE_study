@@ -3,7 +3,7 @@
             class="home"
             aria-labelledby="main-title"
     >
-        <header class="hero" :style="{backgroundImage: ''}">
+        <header class="hero" >
 <!--            <img-->
 <!--                    v-if="data.heroImage"-->
 <!--                    :src="$withBase('home_bg.jpeg')"-->
