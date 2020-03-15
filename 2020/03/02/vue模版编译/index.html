@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Vue模版编译原理 | archy&#39;s blog</title>
+    <meta name="description" content="
+模版编译的工作是将模版进行编译，并通过渲染函数生成vnode。
+
+大致流程为：
+将模版解析成AST
+遍历AST标记静态节点
+使用AST生成渲染函数
+对应的模块分别为：
+解析器
+优化器
+代码生成器
+
+解析器
+任务是将模版变为AST，其包含HTML解析器、文本解析器、过滤解析器。
+HTML解析器
+HTML解析器是解析器部分最主要的部分。
+
+在拿到 ...">
+    <meta name="generator" content="VuePress 1.3.1">
+    <link>
+  <undefined></undefined>
+    
+    <link rel="preload" href="/FE_study/assets/css/0.styles.3e8505d8.css" as="style"><link rel="preload" href="/FE_study/assets/js/app.80d13805.js" as="script"><link rel="preload" href="/FE_study/assets/js/8.f2bbdb3e.js" as="script"><link rel="preload" href="/FE_study/assets/js/4.4b366c5c.js" as="script"><link rel="preload" href="/FE_study/assets/js/26.cae5988e.js" as="script"><link rel="prefetch" href="/FE_study/assets/js/1.9aea77fd.js"><link rel="prefetch" href="/FE_study/assets/js/10.515e7a76.js"><link rel="prefetch" href="/FE_study/assets/js/11.2b768f30.js"><link rel="prefetch" href="/FE_study/assets/js/12.712bd1db.js"><link rel="prefetch" href="/FE_study/assets/js/13.3443ced9.js"><link rel="prefetch" href="/FE_study/assets/js/14.e2493bb5.js"><link rel="prefetch" href="/FE_study/assets/js/15.2663b2fc.js"><link rel="prefetch" href="/FE_study/assets/js/16.950bc545.js"><link rel="prefetch" href="/FE_study/assets/js/17.5d4643a3.js"><link rel="prefetch" href="/FE_study/assets/js/18.be94dd0f.js"><link rel="prefetch" href="/FE_study/assets/js/19.261dbf3a.js"><link rel="prefetch" href="/FE_study/assets/js/20.a4315a9f.js"><link rel="prefetch" href="/FE_study/assets/js/21.7d2a97d9.js"><link rel="prefetch" href="/FE_study/assets/js/22.d11c7c94.js"><link rel="prefetch" href="/FE_study/assets/js/23.f67fdc58.js"><link rel="prefetch" href="/FE_study/assets/js/24.898a5d63.js"><link rel="prefetch" href="/FE_study/assets/js/25.b0bb40bd.js"><link rel="prefetch" href="/FE_study/assets/js/27.8b19285b.js"><link rel="prefetch" href="/FE_study/assets/js/28.0298d8e0.js"><link rel="prefetch" href="/FE_study/assets/js/29.0b4cd979.js"><link rel="prefetch" href="/FE_study/assets/js/30.aeb162bb.js"><link rel="prefetch" href="/FE_study/assets/js/31.a6cb977f.js"><link rel="prefetch" href="/FE_study/assets/js/32.fed2b0e0.js"><link rel="prefetch" href="/FE_study/assets/js/33.59ff8089.js"><link rel="prefetch" href="/FE_study/assets/js/34.47a589eb.js"><link rel="prefetch" href="/FE_study/assets/js/35.7ae5b712.js"><link rel="prefetch" href="/FE_study/assets/js/36.4e01d14c.js"><link rel="prefetch" href="/FE_study/assets/js/37.7aeaef99.js"><link rel="prefetch" href="/FE_study/assets/js/5.289b305e.js"><link rel="prefetch" href="/FE_study/assets/js/6.79e8c860.js"><link rel="prefetch" href="/FE_study/assets/js/7.ad3dd45a.js"><link rel="prefetch" href="/FE_study/assets/js/9.8808a747.js"><link rel="prefetch" href="/FE_study/assets/js/vuejs-paginate.90bd32d2.js">
+    <link rel="stylesheet" href="/FE_study/assets/css/0.styles.3e8505d8.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="vuepress-theme-blog__global-layout"><section id="header-wrapper"><header id="header"><div class="header-wrapper"><div class="title"><div class="title-line-wrapper"><div class="title-line"></div></div> <a href="/FE_study/" class="nav-link home-link">archy's blog </a></div> <div class="header-right-wrap"><ul class="nav"><li class="nav-item"><a href="/FE_study/tag/Vue/" class="nav-link">Vue</a></li></ul> <div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div></div></div></header></section> <div id="mobile-header"><div class="mobile-header-bar"><div class="mobile-header-title"><a href="/FE_study/" class="nav-link mobile-home-link">archy's blog </a> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></div> <div class="mobile-menu-wrapper"><hr class="menu-divider"> <ul class="mobile-nav"><li class="mobile-nav-item"><a href="/FE_study/tag/Vue/" class="nav-link">Vue</a></li> <li class="mobile-nav-item"><!----></li></ul></div></div></div> <div class="content-wrapper"><div id="vuepress-theme-blog__post-layout"><article itemscope="itemscope" itemtype="https://schema.org/BlogPosting" class="vuepress-blog-theme-content"><header><h1 itemprop="name headline" class="post-title">
+        Vue模版编译原理
+      </h1> <div class="post-meta"><div itemprop="publisher author" itemtype="http://schema.org/Person" itemscope="itemscope" class="post-meta-author"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-navigation"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg> <span itemprop="name">archy</span> <span itemprop="address">   in Baoding</span></div> <div class="post-meta-date"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <time pubdate itemprop="datePublished" datetime="2020-03-02T00:00:00.000Z">
+      2020-03-02
+    </time></div> <ul itemprop="keywords" class="post-meta-tags"><li class="post-tag" data-v-d832e844><a href="/FE_study/tag/Vue" data-v-d832e844> Vue </a></li></ul></div></header> <div itemprop="articleBody" class="content__default"><h2 id="模版编译原理"><a href="#模版编译原理" class="header-anchor">#</a> 模版编译原理</h2> <p>模版编译的工作是将模版进行编译，并通过渲染函数生成vnode。</p> <p>大致流程为：</p> <ol><li>将模版解析成AST</li> <li>遍历AST标记静态节点</li> <li>使用AST生成渲染函数
+对应的模块分别为：</li> <li>解析器</li> <li>优化器</li> <li>代码生成器</li></ol> <h3 id="解析器"><a href="#解析器" class="header-anchor">#</a> 解析器</h3> <p>任务是将模版变为AST，其包含HTML解析器、文本解析器、过滤解析器。</p> <h4 id="html解析器"><a href="#html解析器" class="header-anchor">#</a> HTML解析器</h4> <p>HTML解析器是解析器部分最主要的部分。</p> <p>在拿到模版字符串时，因为标签的层级关系，所以需要设计一个堆栈来存储当前的容器组件。
+要生成AST就要不断的分析模版文本要表达的意思，当识别到标签后，也就是一个新的元素插入进来，
+首先要识别<code>tag</code>、<code>attr</code>。例如：</p> <div class="language-html line-numbers-mode"><pre class="language-html"><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>test<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span>123<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>识别为三个部分即：<code>div</code>、<code>id=&quot;test</code>、<code>&gt;</code>，其中最后的括号可以分辨标签是否是自闭合标签。</p> <p>同时在识别到不同信息后，会调用对应的钩子函数进行处理。</p> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token function">parseHtml</span><span class="token punctuation">(</span>template<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    <span class="token function">start</span><span class="token punctuation">(</span><span class="token parameter">tag<span class="token punctuation">,</span> attrs<span class="token punctuation">,</span> unary</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token comment">// 解析到标签开始部分，触发该函数</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token comment">// 解析到标签结束，触发该函数</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token function">chars</span><span class="token punctuation">(</span><span class="token parameter">text</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token comment">// 解析到文本，触发该函数</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token function">comment</span><span class="token punctuation">(</span><span class="token parameter">text</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token comment">// 解析到注释触发该函数</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br></div></div><p>关于一个部分是否为标签的识别就是判断是否为<code>&lt;</code>开始，若不是就为文本节点或者注释节点。
+同时在循环结束时，如果堆栈剩下的标签信息与解析的信息不同的话，也就可以发现存在标签问题。</p> <h4 id="文本解析器"><a href="#文本解析器" class="header-anchor">#</a> 文本解析器</h4> <p>上面的部分只是处理了文本和标签直接的区别，但是文本中还有变量或者表达式等信息的存在。
+所以还需要文本解析器对文本进行进一步的处理，将对应变量的值解析到AST上。</p> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token string">&quot;Hello {{name}}&quot;</span>
+<span class="token comment">// 解析为</span>
+<span class="token string">&quot;Hello&quot;</span> <span class="token operator">+</span> <span class="token function">_s</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><h3 id="优化器"><a href="#优化器" class="header-anchor">#</a> 优化器</h3> <p>优化器的作用是标记出AST中的静态节点以提升运行效率。
+需要分别标记处静态节点以及静态跟节点。
+静态节点就是不断递归的过程，识别到其为静态元素后进行标记，若自元素为非静态节点，将其父元素标记为非静态元素。
+静态跟节点是基于以上的信息，第一个访问到的具有静态节点标记的元素，其自元素肯定也为静态元素，就完成了优化器的任务。</p> <h3 id="生成器"><a href="#生成器" class="header-anchor">#</a> 生成器</h3> <p>经过以上的过程，已经得到了经过优化的AST，生成器就是根据其生成对应的渲染函数，以获得vnode。
+根据不同的节点标记类型，使用不同的构建函数完成计算。</p> <table><thead><tr><th>类型</th> <th>创建方法</th> <th>别名</th></tr></thead> <tbody><tr><td>元素节点</td> <td>creatElement</td> <td>_c</td></tr> <tr><td>文本节点</td> <td>creatTypeVNode</td> <td>_v</td></tr> <tr><td>注释节点</td> <td>creatEmptyVNode</td> <td>_e</td></tr></tbody></table></div> <footer><!----> <hr> <!----></footer></article> <div class="sticker vuepress-toc"><div class="vuepress-toc-item vuepress-toc-h2 active"><a href="#模版编译原理" title="模版编译原理">模版编译原理</a></div><div class="vuepress-toc-item vuepress-toc-h3"><a href="#解析器" title="解析器">解析器</a></div><div class="vuepress-toc-item vuepress-toc-h3"><a href="#优化器" title="优化器">优化器</a></div><div class="vuepress-toc-item vuepress-toc-h3"><a href="#生成器" title="生成器">生成器</a></div></div></div></div> <footer class="footer" data-v-582f9766><div class="footer-left-wrap" data-v-582f9766><ul class="contact" data-v-582f9766><li class="contact-item" data-v-582f9766><a href="https://github.com/chinaarchy" target="_blank" rel="noopener noreferrer" class="nav-link external" data-v-582f9766><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github" data-v-582f9766><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" data-v-582f9766></path></svg>
+          
+        </a></li><li class="contact-item" data-v-582f9766><a href="/FE_study/2020/03/02/vue%E6%A8%A1%E7%89%88%E7%BC%96%E8%AF%91/chinaarchy@icloud.com.html" class="nav-link" data-v-582f9766><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail" data-v-582f9766><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" data-v-582f9766></path><polyline points="22,6 12,13 2,6" data-v-582f9766></polyline></svg>
+          
+        </a></li></ul></div> <div class="footer-right-wrap" data-v-582f9766><ul class="copyright" data-v-582f9766><li class="copyright-item" data-v-582f9766><a href="https://policies.google.com/privacy?hl=en-US" target="_blank" rel="noopener noreferrer" class="nav-link external" data-v-582f9766>Privacy Policy</a></li><li class="copyright-item" data-v-582f9766><a href="/FE_study/2020/03/02/vue%E6%A8%A1%E7%89%88%E7%BC%96%E8%AF%91/.html" class="nav-link" data-v-582f9766>MIT Licensed | Copyright © 2018-present Vue.js</a></li></ul></div></footer></div><div class="global-ui"></div></div>
+    <script src="/FE_study/assets/js/app.80d13805.js" defer></script><script src="/FE_study/assets/js/8.f2bbdb3e.js" defer></script><script src="/FE_study/assets/js/4.4b366c5c.js" defer></script><script src="/FE_study/assets/js/26.cae5988e.js" defer></script>
+  </body>
+</html>
